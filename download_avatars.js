@@ -1,3 +1,4 @@
+// command line to use: node download_avatars.js jquery jquery
 var request = require('request');
 var gitToken =  require('./secrets');
 var arg = process.argv.slice(2);
@@ -23,9 +24,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
        let result =  response.pipe(fs.createWriteStream(__dirname + path));
      
        response.on('end', function(){
-           console.log('')
+           console.log('all files have been created')
        })
-
     })
   }
   getRepoContributors(arg[0], arg[1], function(data) {
