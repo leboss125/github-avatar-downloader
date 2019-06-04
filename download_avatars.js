@@ -1,5 +1,6 @@
 var request = require('request');
 var gitToken =  require('./secrets');
+var arg = process.argv.slice(2);
 var fs = require('fs');
 function getRepoContributors(repoOwner, repoName, cb) {
     var options = {
@@ -10,22 +11,24 @@ function getRepoContributors(repoOwner, repoName, cb) {
       }
     };
     request(options, function(err, res,body) {
-        // cb(JSON.parse(res));
-        
         let parsed = JSON.parse(body)
         cb(parsed)
     });
   }
   function downloadImageByURL(url,path) {
     request.get(url).on('response',  function(response){
+        response.on('data', function(){
+            console.log('creating files .....')
+        })
        let result =  response.pipe(fs.createWriteStream(__dirname + path));
-       request.on('data', function(data){
-           console.log('creating files .....')
+     
+       response.on('end', function(){
+           console.log('')
        })
+
     })
   }
-
-  getRepoContributors("jquery", "jquery", function(data) {
+  getRepoContributors(arg[0], arg[1], function(data) {
         data.forEach(function(el){
          downloadImageByURL(el.avatar_url,`/avatars/${el.login}${'.jpeg'}`)
         })
