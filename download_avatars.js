@@ -1,11 +1,11 @@
 // command line to use: node download_avatars.js jquery jquery
-var request = require('request');
-var gitToken = require('./secrets');
-var arg = process.argv.slice(2);
-var fs = require('fs');
+const request = require('request');
+const gitToken = require('./secrets');
+const arg = process.argv.slice(2);
+const fs = require('fs');
 
 function getRepoContributors(repoOwner, repoName, cb) {
-    var options = {
+    let options = {
         url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
         headers: {
             'User-Agent': 'request',
